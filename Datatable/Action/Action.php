@@ -157,7 +157,7 @@ class Action
         $resolver->setAllowedTypes('route', ['null', 'string']);
         $resolver->setAllowedTypes('route_parameters', ['null', 'array', 'Closure']);
         $resolver->setAllowedTypes('icon', ['null', 'string']);
-        $resolver->setAllowedTypes('label', ['null', 'string']);
+        $resolver->setAllowedTypes('label', ['null', 'string', 'Closure']);
         $resolver->setAllowedTypes('confirm', 'bool');
         $resolver->setAllowedTypes('confirm_message', ['null', 'string']);
         $resolver->setAllowedTypes('attributes', ['null', 'array', 'Closure']);
@@ -255,6 +255,22 @@ class Action
         return $this;
     }
 
+    /**
+     * Call label closure.
+     *
+     * @param array $row
+     *
+     * @return string
+     */
+    public function callLabelClosure(array $row = array())
+    {
+        if ($this->label instanceof Closure) {
+            return call_user_func($this->label, $row);
+        }
+
+        return $this->label;
+    }
+    
     /**
      * @return bool
      */

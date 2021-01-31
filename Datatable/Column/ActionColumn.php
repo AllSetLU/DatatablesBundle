@@ -77,6 +77,7 @@ class ActionColumn extends AbstractColumn
         $parameters = [];
         $attributes = [];
         $values = [];
+        $labels = array();
 
         /** @var Action $action */
         foreach ($this->actions as $actionKey => $action) {
@@ -130,12 +131,15 @@ class ActionColumn extends AbstractColumn
                     $values[$actionKey] = null;
                 }
             }
+
+            $labels[$actionKey] = $action->callLabelClosure($row);
         }
 
         $row[$this->getIndex()] = $this->twig->render(
             $this->getCellContentTemplate(),
             [
                 'actions' => $this->actions,
+                'labels' => $labels,
                 'route_parameters' => $parameters,
                 'attributes' => $attributes,
                 'values' => $values,
